@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decentralized Bank</title>
+
+    <!-- ether js -->
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+
+    <!-- Bootstrap -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="sha256" crossorigin="anonymous">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="undefined" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha256" crossorigin="anonymous"></script>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    
+    <!-- sweetalert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+
+    <nav class="navbar deep-purple accent-2 mb-2">
+        <div class="mx-auto">
+            
+            <p class="ether_add h4" id="ether_add2">Ethereum Bank Your Acc address:</h1>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row d-inline">
+            status: <span id='status'>Loading.......</span>
+        </div>
+
+        <div class="row">
+
+            <div class="col">
+                <div class="card" style="width:33.33rem; height: 12rem; ">
+                    <!-- <img src="https://cdn.pixabay.com/photo/2021/05/24/09/15/ethereum-logo-6278329_960_720.png" class="card-img-top"> -->
+                    <div class="card-body">
+
+                        <h1 class="card-title text-center" style="padding-top: 1rem;"><strong>Create Your Ethereum Account</strong></h1>
+
+                        <div class="container">
+                            <div class="col-md-12 text-center" style="padding-top: 1rem;">
+                                <button type="button" class="btn  white-text  purple accent-3 btn-medium" id="btn-balance" onclick="CreateAccount()">
+                                    Create Account</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="col">
+                <div class="card" style="width:33.33rem; height: 12rem; ">
+                    <!-- <img src="https://cdn.pixabay.com/photo/2018/03/21/05/29/money-icon-3245628_960_720.jpg" class="card-img-top"> -->
+                    <div class="card-body">
+
+                        <h1 class="card-title text-center" style="padding-top: 1rem;"><strong>Know Your Account Balance</strong></h1>
+
+                        <div class="container">
+                            <div class="col-md-12 text-center" style="padding-top: 1rem;">
+                                <button type="button" class="btn  white-text  purple accent-3 btn-medium" id="btn-balance" onclick="GetBalance();">
+                                    Get Balance</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col">
+                <div class="card" style="width:33.33rem; height: 13rem; ">
+                    <!-- <img src="https://cdn.pixabay.com/photo/2019/06/05/17/52/payment-4254220_960_720.jpg" class="card-img-top"> -->
+                    <div class="card-body">
+                        <h5 class="card-title text-center"><strong>Deposit Ethereum</strong></h5>
+
+                        <div class="col-12" style="padding-top: 1rem;">
+                            <input type="text" class="form-control" id="deposit" placeholder="Enter Deposit Amount">
+                        </div>
+
+                        <div class="container">
+                            <div class="col-md-12 text-center" style="padding-top: 1rem;">
+                                <button type="button" class="btn  white-text  purple accent-3" id="btn-deposit" onclick="Deposit()">Deposit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+
+                <div class="card" style="width:33.33rem; height: 15rem; ">
+                    <!-- <img src="https://cdn.pixabay.com/photo/2018/03/28/06/43/financial-3268440_960_720.jpg" class="card-img-top"> -->
+                    <div class="card-body">
+                        <h5 class="card-title text-center" style="padding-top: 1rem;"><strong>Withdraw Ethereum</strong></h5>
+
+                        <div class="col-12" style="padding-top: 1rem;">
+                            <input type="text" class="form-control" id="withdraw" placeholder="Enter Withdraw Amount">
+                        </div>
+
+                        <div class="container">
+                            <div class="col-md-12 text-center" style="padding-top: 1rem;">
+                                <button type="button" class="btn  white-text  purple accent-3" id="btn-withdraw" onclick="Withdraw();">Withdraw</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <button onclick="getMood()">Get Mood</button>
+<button onclick="setMood()">Set Mood</button>
+
+    <script type="text/javascript">
+        const BankContractAddress = "0x2b4AC73d188976851bf410d7B39835d6cFCE7238";
+        const MoodContractABI =[
+        {
+            "inputs": [],
+            "name": "createAcc",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "deposit",
+            "outputs": [],
+            "stateMutability": "payable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address payable",
+                    "name": "reciever",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "transferAmount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "transferEther",
+            "outputs": [],
+            "stateMutability": "payable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "withdrawAmount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "withdraw",
+            "outputs": [],
+            "stateMutability": "payable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "accountBalance",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "accountExists",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ];
+
+        let MoodContract;
+        let signer;
+
+        // Request access to the user's wallet and connect the signer to your metamask account (we use [0] as the default), and define the contract object using your contract address, ABI, and signer
+        const provider = new ethers.providers.Web3Provider(window.ethereum, "goerli");
+        provider.send("eth_requestAccounts", []).then(() => {
+            provider.listAccounts().then((accounts) => {
+              signer = provider.getSigner(accounts[0]);
+              console.log("signer ", signer);
+              console.log("BankContractAddress ", BankContractAddress);
+              MoodContract = new ethers.Contract(
+                BankContractAddress,
+                MoodContractABI,
+                signer
+              );
+            });
+          });
+
+          async function CreateAccount() {
+            const checkAccExists = MoodContract.accountExists();
+            const checkAccExistsPromise = await checkAccExists;
+            console.log("checkAccExistsPromise ",checkAccExistsPromise); 
+            if(!checkAccExistsPromise){
+                const getMoodPromise = MoodContract.createAcc(); 
+                const acc = await getMoodPromise; 
+                console.log("acc ", acc); 
+            }
+          }
+
+          const check = async () => { // checks if bank-account already exits or not
+              const checkAccExists = MoodContract.accountExists();
+              const checkAccExistsPromise = await checkAccExists;
+              console.log("checkAccExistsPromise ",checkAccExistsPromise); 
+          }
+          check();
+
+          async function GetBalance() {
+            console.log("MoodContract ", MoodContract);
+            const getMoodPromise2 = MoodContract.accountBalance();
+            const balance = await getMoodPromise2;
+            console.log("balance in wei ", balance);
+            swal(`Your Account Balance is`, `${balance}`, `info`);
+          }
+          
+          async function Deposit() {
+            // const mood = document.getElementById("mood").value;
+            var amtA = 0;
+            amtA = $('#deposit').val();
+            console.log("amtA ", amtA)
+            const setMoodPromise = MoodContract.deposit({
+                // to: **CONTRACT_ADDRESS**,
+                value: ethers.utils.parseEther(amtA, 'ether')
+                
+            });
+            await setMoodPromise;
+          }
+                  
+    </script>
+
+</body>
+</html>
